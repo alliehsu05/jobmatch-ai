@@ -2,8 +2,9 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from resume_reader import get_resume_path, read_resume
 from jd_reader import get_jd_path, read_jd
+from nlp_utils import extract_key_sentences
+from resume_reader import get_resume_path, read_resume
 from token_utils import count_tokens
 
 
@@ -11,14 +12,16 @@ from token_utils import count_tokens
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAPI_API_KEY"))
 
-
-# read resume and job description
+# read and preprocess resume
 resume_path = get_resume_path()
 resume_text = read_resume(resume_path)
+processed_resume = extract_key_sentences(resume_text)
 
+# read and preprocess job description
 jd_paths = get_jd_path()
-jd_text = read_jd(jd_paths)
-
+jd_dict = read_jd(jd_paths)
+processed_jd_dict = {title: extract_key_sentences(jd) for title, jd in jd_dict.items()}
+jd_prompt_section = "\n\n".join(f"[Job Title]\n{title}\n[JD]\n{jd}" for title, jd in processed_jd_dict.items())
 
 # Construct prompt
 prompt = f"""
@@ -26,13 +29,11 @@ This is a candidate's resume along with multiple job descriptions.
 Please analyze the candidate's suitability, skill match, and potential gaps, then provide a brief summary and suitability rating for each position.
 
 [Resume]
-{resume_text}
+{processed_resume}
 
 ==============================
+{jd_prompt_section}
 """
-
-for title, jd in jd_text.items():
-    prompt += f"\n\n[Job Title: {title}]\n\n{jd}\n-"
 
 print(prompt)
 print("Tokens", count_tokens(prompt))
