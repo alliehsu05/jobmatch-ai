@@ -4,6 +4,7 @@ from openai import OpenAI
 
 from resume_reader import get_resume_path, read_resume
 from jd_reader import get_jd_path, read_jd
+from token_utils import count_tokens
 
 
 # load API key
@@ -33,6 +34,8 @@ Please analyze the candidate's suitability, skill match, and potential gaps, the
 for title, jd in jd_text.items():
     prompt += f"\n\n[Job Title: {title}]\n\n{jd}\n-"
 
+print(prompt)
+print("Tokens", count_tokens(prompt))
 
 completion = client.chat.completions.create(
     messages=[
