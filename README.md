@@ -8,7 +8,6 @@
 - **python-docx** — Document Parsing
 - **python-dotenv** — Environment variable management
 - **Git + GitHub** — Version control and issue tracking
-- **Jira** — Project Management  
 
 
 ## 📝 Related Tech Blog Series 
@@ -19,4 +18,6 @@ I'm documenting the development of this project as a multi-part technical blog s
 - [🔗 Part I: Setting Up Python and the OpenAI API](https://python.plainenglish.io/part-i-setting-up-python-and-the-openai-api-478a2cf72492)
 - [🔗 Part II: Reading Resumes and Job Descriptions with Python](https://python.plainenglish.io/part-ii-reading-resumes-and-job-descriptions-with-python-90584b810a74)
 - [🔗 Part III: Why GPT Struggles with Long Text — Understanding Tokens and the Role of NLP](https://python.plainenglish.io/week-3-why-gpt-struggles-with-long-text-understanding-tokens-and-the-role-of-nlp-b5342f5dbf49)
-- *(Part IV: coming soon)*
+- [🔗 Part IV: Making GPT Smarter with NLP — Clean, Extract, and Focus](https://python.plainenglish.io/part-iv-making-gpt-smarter-with-nlp-clean-extract-and-focus-e8a3da6d1fa1)
+- [🔗 Part V: Designing Prompts — Understanding Prompt Engineering and Why It Matters](https://python.plainenglish.io/designing-prompts-understanding-prompt-engineering-and-why-it-matters-4871fc4a2c14)
+- *(Part VI: coming soon)*
