@@ -25,9 +25,20 @@ jd_prompt_section = "\n\n".join(f"[Job Title]\n{title}\n[JD]\n{jd}" for title, j
 
 # Construct prompt
 prompt = f"""
-This is a candidate's resume along with multiple job descriptions.
-Please analyze the candidate's suitability, skill match, and potential gaps, then provide a brief summary and suitability rating for each position.
+### Identity
+You are a senior recruiter specializing in software engineer roles.
 
+### Instructions
+Compare the candidate's resume with each job description provided.
+Return a JSON with a top-level key "results", which is a list of objects.
+Each object must contain exactly these keys:
+- job_title
+- match_score (0-10)
+- strengths (array of strings)
+- weakness (array of strings)
+- summary (concise actionable advice)
+
+### Context
 [Resume]
 {processed_resume}
 
