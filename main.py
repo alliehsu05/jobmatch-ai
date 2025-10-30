@@ -1,16 +1,8 @@
-import os
-from dotenv import load_dotenv
-from openai import OpenAI
-
+from gpt_utils import safe_api_call
 from jd_reader import get_jd_path, read_jd
 from nlp_utils import extract_key_sentences
 from resume_reader import get_resume_path, read_resume
-from token_utils import count_tokens
 
-
-# load API key
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAPI_API_KEY"))
 
 # read and preprocess resume
 resume_path = get_resume_path()
@@ -46,18 +38,5 @@ Each object must contain exactly these keys:
 {jd_prompt_section}
 """
 
-print(prompt)
-print("Tokens", count_tokens(prompt))
-
-completion = client.chat.completions.create(
-    messages=[
-        {
-            "role": "user",
-            "content": prompt
-        }
-    ],
-    model="gpt-4o",
-    max_tokens=1000
-)
-
-print(completion.choices[0].message.content)
+completion = safe_api_call(prompt)
+print(completion)
