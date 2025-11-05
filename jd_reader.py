@@ -1,5 +1,8 @@
 import os
 
+from LoggerManager import logger_manager
+
+
 def get_jd_path(folder='resources'):
     jd_path = []
 
@@ -9,7 +12,11 @@ def get_jd_path(folder='resources'):
 
     if jd_path:
         return jd_path
-    raise FileNotFoundError(f"No TEXT file found in '{folder}' folder.")
+    logger_manager.error(
+        f"No TEXT file found in '{folder}' folder.",
+        True,
+        FileNotFoundError
+    )
 
 def read_jd(paths):
     """
@@ -24,7 +31,10 @@ def read_jd(paths):
                 text = f.read()
             jd_text[job_title] = text
         except Exception as err:
-            raise RuntimeError(f"Failed to read TEXT file {job_title}: {err}")
+            logger_manager.error(
+                f"Failed to read TEXT file {job_title}: {err}",
+                True
+            )
     return jd_text
 
 if __name__ == '__main__':
