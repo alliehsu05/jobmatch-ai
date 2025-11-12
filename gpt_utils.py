@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from dotenv import load_dotenv
@@ -5,6 +6,8 @@ from openai import OpenAI, OpenAIError
 
 from LoggerManager import logger_manager
 from token_utils import count_tokens
+
+REQUIRED_KEYS = {"job_title", "match_score", "strength", "weakness", "summary"}
 
 
 # load API key
@@ -59,3 +62,19 @@ def safe_api_call(prompt, retries=2, delay=2):
         "API call failed after retries",
         True
     )
+
+def parse_gpt_json(content, required_keys=REQUIRED_KEYS):
+    """
+    Parse GPT response content as JSON.
+    """
+    try:
+        objects = json.loads(content.replace("```json", "").replace("```", "").strip())["results"]
+        for i, obj in enumerate(objects, start=1):
+            missing_keys = required_keys - obj.keys()
+            if missing_keys:
+                raise ValueError(f"Object {i} is missing keys: {missing_keys}")
+        return objects
+    except json.decoder.JSONDecodeError as e:
+        logger_manager.error(f"JSON parsing error: {e}", True, ValueError)
+    except ValueError as ve:
+        logger_manager.error(f"{ve}", True, type(ve))
