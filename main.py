@@ -26,7 +26,7 @@ Return a JSON with a top-level key "results", which is a list of objects.
 Each object must contain exactly these keys:
 - job_title
 - match_score (0-10)
-- strengths (array of strings)
+- strength (array of strings)
 - weakness (array of strings)
 - summary (concise actionable advice)
 
