@@ -1,4 +1,4 @@
-from gpt_utils import safe_api_call
+from gpt_utils import safe_api_call, parse_gpt_json
 from jd_reader import get_jd_path, read_jd
 from nlp_utils import extract_key_sentences
 from resume_reader import get_resume_path, read_resume
@@ -39,4 +39,17 @@ Each object must contain exactly these keys:
 """
 
 completion = safe_api_call(prompt)
-print(completion)
+json_completion = parse_gpt_json(completion)
+
+output = ""
+for match_result in json_completion:
+    output += (
+        f"Job Title: {match_result['job_title']}\n"
+        f"Match Score: {match_result['match_score']}\n"
+        f"Strength: {', '.join(match_result['strength'])}\n"
+        f"Weakness: {', '.join(match_result['weakness'])}\n"
+        f"Summary: {match_result['summary']}\n"
+        "----------------------------------------\n"
+    )
+
+print(output)
