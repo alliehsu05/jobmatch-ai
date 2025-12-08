@@ -1,9 +1,14 @@
 import re
-import spacy
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
+# Download NLTK resources
+nltk.download("punkt")       # tokenizer
+nltk.download('punkt_tab')
+nltk.download("stopwords")   # stopwords
+stop_words = set(stopwords.words("english"))
 
-# Load spaCy English model
-nlp = spacy.load("en_core_web_sm")
 
 def clean_text(raw_text: str) -> str:
     # Remove disruptive symbols except sentence punctuation
@@ -11,23 +16,33 @@ def clean_text(raw_text: str) -> str:
     # Remove extra spaces/newlines
     text = re.sub(r"\s+", " ", text).strip()
     # Remove stopwords
-    doc = nlp(text)
-    cleaned_text = " ".join(
-        token.text for token in doc if token.text.lower() not in nlp.Defaults.stop_words
-    )
-
-    return cleaned_text
+    tokens = word_tokenize(text)
+    cleaned_tokens = [w for w in tokens if w.lower() not in stop_words]
+    return " ".join(cleaned_tokens)
 
 def extract_skills(text: str) -> set:
-    """
-    Extract potential skill keywords from text using spaCy.
-    Grabs all NOUNs and PROPNs.
-    Returns a set of unique skills.
-    """
-    doc = nlp(text.lower())
-    extracted_skills = {token.text for token in doc if token.pos_ in ("NOUN", "PROPN")}
+    tokens = word_tokenize(text)
+    skills = set()
 
-    return extracted_skills
+    for t in tokens:
+        if len(t) < 3:
+            continue
+
+        # Tech-style tokens (AWS, SQL, API, NodeJS)
+        if t.isupper():
+            skills.add(t)
+            continue
+
+        # CamelCase (PowerShell, PyTorch)
+        if re.match(r"[A-Z][a-z]+[A-Z][a-z]+", t):
+            skills.add(t)
+            continue
+
+        # Keep tokens that look like skill words
+        if t[0].isalpha() and t.lower() not in stop_words:
+            skills.add(t)
+
+    return skills
 
 def extract_key_sentences(text: str) -> str:
     """
