@@ -1,7 +1,7 @@
 import json
 import os
 import time
-from dotenv import load_dotenv
+
 from openai import OpenAI, OpenAIError
 
 from LoggerManager import logger_manager
@@ -11,8 +11,28 @@ REQUIRED_KEYS = {"job_title", "match_score", "strength", "weakness", "summary"}
 
 
 # load API key
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAPI_API_KEY"))
+def load_api_key():
+    """
+    Priority:
+    1. Streamlit Cloud secrets
+    2. .env file in local
+    """
+    try:
+        import streamlit as st
+        if "OPENAI_API_KEY" in st.secrets:
+            return st.secrets["OPENAI_API_KEY"]
+    except Exception:
+        pass # not in Streamlit environment
+
+    try:
+        from dotenv import load_dotenv
+        load_dotenv()
+    except Exception:
+        pass
+
+    return os.getenv("OPENAI_API_KEY")
+
+client = OpenAI(api_key=load_api_key())
 
 def _call_gpt(prompt):
     """
