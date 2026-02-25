@@ -24,4 +24,4 @@ I'm documenting the development of this project as a multi-part technical blog s
 - [🔗 Part IV: Making GPT Smarter with NLP — Clean, Extract, and Focus](https://python.plainenglish.io/part-iv-making-gpt-smarter-with-nlp-clean-extract-and-focus-e8a3da6d1fa1)
 - [🔗 Part V: Designing Prompts — Understanding Prompt Engineering and Why It Matters](https://python.plainenglish.io/designing-prompts-understanding-prompt-engineering-and-why-it-matters-4871fc4a2c14)
 - [🔗 Part VI: Exception Handling, Performance Monitoring, and Automation Testing](https://python.plainenglish.io/part-vi-exception-handling-performance-monitoring-and-automation-testing-c5d56b234860)
-- *(Part VII: coming soon)*
+- [🔗Part VII: Deploying JobMatch.ai as a Streamlit Web App](https://python.plainenglish.io/part-vii-deploying-jobmatch-ai-as-a-streamlit-web-app-697f1e3b49a5)
